@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage'; // Import the new page
+import RegisterPage from './pages/RegisterPage';
+import DashboardPage from './pages/DashboardPage'; // Import Dashboard
+import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
 import { CssBaseline, ThemeProvider, createTheme, Box } from '@mui/material';
 
 // Create a basic Material UI theme
@@ -29,22 +31,22 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline /> {/* Resets CSS and applies basic Material Design styles */}
       <Router>
-        {/* This Box ensures automatic centering and full viewport coverage */}
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center', // Centers horizontally
-            alignItems: 'center',     // Centers vertically
-            minHeight: '100vh',       // Ensures the Box takes full viewport height
-            bgcolor: 'background.default', // Applies the theme's default background color
-          }}
-        >
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            {/* We will add more routes here later, like a dashboard */}
-          </Routes>
-        </Box>
+        {/* The centering Box is removed from here to allow pages to control their own layout */}
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          {/* Protected Route */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </Router>
     </ThemeProvider>
   );
